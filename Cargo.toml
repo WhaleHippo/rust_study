@@ -1,0 +1,12 @@
+[package]
+name = "rust_study"
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.90"
+publish = false
+
+[dependencies]
+futures = { version = "0.3", features = ["executor"] }
+
+[lints.rust]
+unsafe_code = "forbid"
