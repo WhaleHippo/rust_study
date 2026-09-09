@@ -25,7 +25,9 @@ impl fmt::Display for LessonError {
 impl std::error::Error for LessonError {}
 
 fn moved_thread_sum(values: Vec<i32>) -> Result<i32, LessonError> {
+    // `move` 클로저는 `values`의 소유권을 새 스레드로 넘긴다. 따라서 스레드 수명 동안 원본 스택을 빌리지 않는다.
     let worker = thread::spawn(move || values.into_iter().sum());
+    // `join`은 작업자가 끝날 때까지 기다리고, 정상 반환값 또는 패닉을 결과로 회수한다.
     match worker.join() {
         Ok(total) => Ok(total),
         Err(_) => Err(LessonError::ThreadPanicked),
@@ -35,6 +37,7 @@ fn moved_thread_sum(values: Vec<i32>) -> Result<i32, LessonError> {
 type Worker = JoinHandle<Result<(), LessonError>>;
 
 fn join_workers(workers: Vec<Worker>) -> Result<(), LessonError> {
+    // 오류가 난 뒤에도 모든 핸들을 join하여 작업자 종료를 보장하고, 처음 관찰한 오류를 보존한다.
     let mut outcome = Ok(());
     for worker in workers {
         let current = match worker.join() {
@@ -50,9 +53,11 @@ fn join_workers(workers: Vec<Worker>) -> Result<(), LessonError> {
 }
 
 fn collect_messages(batches: Vec<Vec<i32>>) -> Result<Vec<i32>, LessonError> {
+    // 여러 생산자가 하나의 수신기로 값을 보낼 수 있는 다중 생산자 채널을 만든다.
     let (sender, receiver) = mpsc::channel();
     let mut workers = Vec::with_capacity(batches.len());
     for batch in batches {
+        // 각 스레드는 자신만의 송신기 핸들을 소유한다. 같은 생산자 안의 순서는 보장되지만 생산자 간 도착 순서는 보장되지 않는다.
         let producer = sender.clone();
         workers.push(thread::spawn(move || {
             for message in batch {
@@ -63,19 +68,24 @@ fn collect_messages(batches: Vec<Vec<i32>>) -> Result<Vec<i32>, LessonError> {
             Ok(())
         }));
     }
+    // 원래 송신기를 버려야 모든 생산자 종료 뒤 채널이 닫히고 `into_iter`가 끝을 알 수 있다.
     drop(sender);
     join_workers(workers)?;
     let mut messages: Vec<_> = receiver.into_iter().collect();
+    // 스케줄링에 따른 도착 순서를 정렬해, 이 예제의 관찰 가능한 결과를 결정적으로 만든다.
     messages.sort_unstable();
     Ok(messages)
 }
 
 fn increment_shared(worker_count: usize) -> Result<usize, LessonError> {
+    // `Arc`는 스레드 간 소유권을 원자적으로 공유하고, `Mutex`는 한 번에 한 작업자만 내부 값에 접근하게 한다.
     let counter = Arc::new(Mutex::new(0));
     let mut workers = Vec::with_capacity(worker_count);
     for _ in 0..worker_count {
+        // `Arc::clone`은 카운터 값을 복사하지 않고 또 하나의 공유 소유권만 만든다.
         let shared_counter = Arc::clone(&counter);
         workers.push(thread::spawn(move || {
+            // 잠금 가드는 스코프가 끝날 때 자동 해제된다. 보유 중 패닉이 나면 이후 잠금은 poison 오류를 보고한다.
             let mut count = shared_counter
                 .lock()
                 .map_err(|_| LessonError::LockPoisoned)?;
@@ -93,6 +103,7 @@ fn assert_send<T: Send>() {}
 fn assert_sync<T: Sync>() {}
 
 fn prove_send_sync() {
+    // `Send`는 값을 다른 스레드로 옮길 수 있음을, `Sync`는 `&T`를 스레드 간 공유해도 안전함을 뜻한다.
     assert_send::<Vec<i32>>();
     assert_sync::<Arc<Mutex<usize>>>();
 }
