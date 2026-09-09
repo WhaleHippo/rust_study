@@ -5,14 +5,19 @@ use futures::{
 };
 
 async fn joined_total(left: u32, right: u32) -> u32 {
+    // `async fn`을 호출해도 즉시 계산되지 않고, 계산 절차를 담은 Future가 만들어진다. 실행은 그 Future가 poll될 때 시작된다.
+    // `ready`는 첫 poll에서 준비된 값을 내놓는 Future이며, `join`은 두 Future를 함께 진행해 입력 순서의 결과 튜플을 만든다.
     let (left, right) = join(ready(left * 2), ready(right * 2)).await;
+    // `.await`는 아직 준비되지 않았다면 현재 Future를 양보하고, 준비되면 중단했던 지점에서 값을 받아 계속 실행한다.
     async { left + right + 1 }.await
 }
 
 async fn collect_even(values: &[u32]) -> Vec<u32> {
+    // 슬라이스의 복사 가능한 값을 순서대로 내보내는 Stream을 구성한다. 이 시점에도 스트림의 항목은 아직 소비되지 않는다.
     let mut values = stream::iter(values.iter().copied());
     let mut collected = Vec::new();
 
+    // `next().await`는 다음 항목을 poll한다. 끝에 도달해 `None`이 되면 `while let` 조건이 맞지 않아 반복이 종료된다.
     while let Some(value) = values.next().await {
         if value.is_multiple_of(2) {
             collected.push(value);
@@ -27,6 +32,7 @@ fn main() {
         "Chapter 17: Fundamentals of Asynchronous Programming: Async, Await, Futures, and Streams"
     );
 
+    // 이 async 블록도 Future를 만든다. `block_on`이 간단한 실행기로서 완료될 때까지 poll해 동기 `main`에서 결과를 얻는다.
     let (total, even_values) = block_on(async {
         let total = joined_total(2, 3).await;
         let even_values = collect_even(&[1, 2, 3, 4]).await;
