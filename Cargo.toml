@@ -1,12 +1,30 @@
-[package]
-name = "rust_study"
+[workspace]
+members = [
+    "chapter03",
+    "chapter04",
+    "chapter05",
+    "chapter06",
+    "chapter07",
+    "chapter08",
+    "chapter09",
+    "chapter10",
+    "chapter11",
+    "chapter12",
+    "chapter13",
+    "chapter14",
+    "chapter15",
+    "chapter16",
+    "chapter17",
+    "chapter18",
+    "chapter19",
+]
+resolver = "3"
+
+[workspace.package]
 version = "0.1.0"
 edition = "2024"
 rust-version = "1.90"
 publish = false
 
-[dependencies]
-futures = { version = "0.3", features = ["executor"] }
-
-[lints.rust]
+[workspace.lints.rust]
 unsafe_code = "forbid"

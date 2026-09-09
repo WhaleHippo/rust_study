@@ -3,6 +3,77 @@
 version = 4
 
 [[package]]
+name = "chapter03"
+version = "0.1.0"
+
+[[package]]
+name = "chapter04"
+version = "0.1.0"
+
+[[package]]
+name = "chapter05"
+version = "0.1.0"
+
+[[package]]
+name = "chapter06"
+version = "0.1.0"
+
+[[package]]
+name = "chapter07"
+version = "0.1.0"
+
+[[package]]
+name = "chapter08"
+version = "0.1.0"
+
+[[package]]
+name = "chapter09"
+version = "0.1.0"
+
+[[package]]
+name = "chapter10"
+version = "0.1.0"
+
+[[package]]
+name = "chapter11"
+version = "0.1.0"
+
+[[package]]
+name = "chapter12"
+version = "0.1.0"
+
+[[package]]
+name = "chapter13"
+version = "0.1.0"
+
+[[package]]
+name = "chapter14"
+version = "0.1.0"
+
+[[package]]
+name = "chapter15"
+version = "0.1.0"
+
+[[package]]
+name = "chapter16"
+version = "0.1.0"
+
+[[package]]
+name = "chapter17"
+version = "0.1.0"
+dependencies = [
+ "futures",
+]
+
+[[package]]
+name = "chapter18"
+version = "0.1.0"
+
+[[package]]
+name = "chapter19"
+version = "0.1.0"
+
+[[package]]
 name = "futures"
 version = "0.3.34"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -121,13 +192,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "rust_study"
-version = "0.1.0"
-dependencies = [
- "futures",
-]
-
-[[package]]
 name = "slab"
 version = "0.4.12"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -135,9 +199,9 @@ checksum = "0c790de23124f9ab44544d7ac05d60440adc586479ce501c1d6d7da3cd8c9cf5"
 
 [[package]]
 name = "syn"
-version = "3.0.3"
+version = "3.0.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "53e9bae58849f64dfa4f5d5ae372c8341f7305f82a3868709269343628b659a3"
+checksum = "12df2e0110f65b775f769bb17ef989067a1d931b2eb822bd4346631eeada89f9"
 dependencies = [
  "proc-macro2",
  "quote",
