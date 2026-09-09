@@ -1,9 +1,12 @@
+// `const`는 프로그램 전체에서 같은 값이며, 컴파일 시 계산되어 시간당 초 수를 분명한 이름으로 남긴다.
 const HOURS_IN_SECONDS: u32 = 60 * 60;
 
+// 입력과 반환값이 모두 수치이므로, 호출 위치에서 계산 결과를 예측할 수 있는 순수한 변환이다.
 const fn celsius_to_fahrenheit(celsius: f64) -> f64 {
     celsius * 9.0 / 5.0 + 32.0
 }
 
+// 표현식의 값을 반환하는 함수: `if`와 `loop`에서도 같은 방식으로 값을 만들 수 있다.
 const fn plus_one(value: i32) -> i32 {
     value + 1
 }
@@ -11,18 +14,25 @@ const fn plus_one(value: i32) -> i32 {
 fn main() {
     println!("Chapter 03: Common Programming Concepts");
 
+    // 불변 바인딩 `language`는 재대입할 수 없고, 이후 같은 이름의 `let`은 별도 바인딩을 만든다.
     let language = "Rust";
+    // `mut`는 이 바인딩에만 변경 권한을 부여하므로 `+= 1` 뒤 출력값은 4가 된다.
     let mut lessons = 3;
     lessons += 1;
+    // 섀도잉은 문자열을 지우는 재대입이 아니라 이름을 `usize` 길이 값에 다시 연결한다.
     let language = language.len();
+    // 스칼라는 각각 부호 있는 정수, 접미사로 명시한 부동소수점, 유니코드 문자, 불리언을 나타낸다.
     let signed: i8 = -8;
     let decimal = 2.5_f32;
     let initial = 'R';
     let truth = true;
+    // 튜플은 서로 다른 타입을 위치로 묶고, 배열은 같은 타입의 고정 길이 요소를 보관한다.
     let pair = (language, signed);
     let chapters = [3, 4, 5, 6];
 
+    // `if`의 두 분기는 모두 `i32`를 만들어야 하며, `truth`가 참이므로 `plus_one(4)`의 5가 선택된다.
     let conditional = if truth { plus_one(4) } else { 0 };
+    // `loop`는 `break 값`으로 반복문 자체의 값을 반환한다. 두 번째 반복에서 20을 반환하며 끝난다.
     let mut loop_count = 0;
     let loop_result = loop {
         loop_count += 1;
@@ -30,15 +40,18 @@ fn main() {
             break loop_count * 10;
         }
     };
+    // `while`은 조건이 참인 동안만 실행한다. 인덱스가 배열 길이에 닿으면 멈춰 4가 된다.
     let mut while_index = 0;
     while while_index < chapters.len() {
         while_index += 1;
     }
+    // 배열을 값으로 순회해 각 장 번호를 더하므로, 네 요소의 합인 18이 출력된다.
     let mut for_total = 0;
     for chapter in chapters {
         for_total += chapter;
     }
 
+    // 비교 결과에 따라 같은 타입인 문자열 리터럴 중 하나를 고르는 조건식이다.
     let cold_celsius = -10.0;
     let temperature_description = if cold_celsius < 0.0 {
         "below freezing"
@@ -64,41 +77,41 @@ mod tests {
 
     #[test]
     fn converts_freezing_point_when_celsius_is_zero() {
-        // Given: water at its freezing point in Celsius.
+        // 준비: 섭씨 물의 어는점은 변환식의 기준값이다.
         let celsius = 0.0;
-        // When: the temperature is converted to Fahrenheit.
+        // 실행: 섭씨 값을 화씨로 변환한다.
         let fahrenheit = celsius_to_fahrenheit(celsius);
-        // Then: it is the Fahrenheit freezing point.
+        // 검증: 0도에는 상수항 32만 남아 화씨 32도가 된다.
         assert_eq!(fahrenheit, 32.0);
     }
 
     #[test]
     fn converts_boiling_point_when_celsius_is_one_hundred() {
-        // Given: water at its boiling point in Celsius.
+        // 준비: 섭씨 물의 끓는점은 비율 계산을 확인하는 대표값이다.
         let celsius = 100.0;
-        // When: the temperature is converted to Fahrenheit.
+        // 실행: 같은 변환식을 적용한다.
         let fahrenheit = celsius_to_fahrenheit(celsius);
-        // Then: it is the Fahrenheit boiling point.
+        // 검증: 100 * 9 / 5 + 32가 화씨 212가 됨을 보장한다.
         assert_eq!(fahrenheit, 212.0);
     }
 
     #[test]
     fn preserves_shared_scale_point_when_celsius_is_negative_forty() {
-        // Given: the temperature where both scales have the same value.
+        // 준비: -40은 섭씨와 화씨 눈금이 만나는 경계 사례다.
         let celsius = -40.0;
-        // When: the temperature is converted to Fahrenheit.
+        // 실행: 음수에도 동일한 산술식을 적용한다.
         let fahrenheit = celsius_to_fahrenheit(celsius);
-        // Then: the value remains negative forty.
+        // 검증: 두 눈금의 공통값인 -40을 그대로 반환한다.
         assert_eq!(fahrenheit, -40.0);
     }
 
     #[test]
     fn converts_negative_temperature_when_celsius_is_below_zero() {
-        // Given: a negative Celsius temperature outside the shared scale point.
+        // 준비: -10은 공통점이 아닌 영하 입력 경계다.
         let celsius = -10.0;
-        // When: the temperature is converted to Fahrenheit.
+        // 실행: 부호가 있는 부동소수점 계산을 수행한다.
         let fahrenheit = celsius_to_fahrenheit(celsius);
-        // Then: the conversion follows the same formula below zero.
+        // 검증: 영하에서도 분기 없이 같은 식으로 화씨 14가 나온다.
         assert_eq!(fahrenheit, 14.0);
     }
 }
