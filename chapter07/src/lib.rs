@@ -1,19 +1,30 @@
+// lib.rs는 라이브러리 크레이트의 루트다. `mod` 선언은 이 루트에서 모듈 트리를 시작한다.
+// `mod back_of_house;`는 같은 이름의 물리 파일 `src/back_of_house.rs`를 붙이지만,
+// `pub`이 없으므로 이 크레이트 밖에서는 `chapter07::back_of_house` 경로로 접근할 수 없다.
 mod back_of_house;
+// `pub mod`는 `src/front_of_house.rs`를 모듈로 붙이는 동시에 그 모듈 경로를 외부에 공개한다.
 pub mod front_of_house;
 
+// `pub use`는 깊은 공개 경로를 크레이트 루트로 다시 내보낸다.
+// 따라서 소비자는 `chapter07::front_of_house::hosting` 대신 `chapter07::hosting`을 사용할 수 있다.
 pub use crate::front_of_house::hosting;
 
+// `pub`이 없는 함수는 라이브러리 내부 구현이다. 아래의 `crate::school_name()`은
+// 현재 라이브러리 크레이트 루트에서 시작하는 절대 경로이며 외부 소비자에게는 보이지 않는다.
 fn school_name() -> &'static str {
     "Rust Study"
 }
 
 pub fn breakfast_toast() -> String {
+    // 비공개 모듈 안의 공개 타입과 생성자는 이 라이브러리 내부에서만 이 경로로 사용할 수 있다.
     let mut meal = back_of_house::Breakfast::summer("Rye");
+    // `toast`는 공개 필드라 수정할 수 있지만, `seasonal_fruit`는 비공개 필드라 직접 바꿀 수 없다.
     meal.toast = "Wheat".into();
     format!("{} toast with {}", meal.toast, meal.fruit())
 }
 
 pub fn menu_summary() -> String {
+    // `crate::`는 크레이트 루트에서 탐색하는 절대 경로다.
     let featured = if crate::school_name() == "Rust Study" {
         back_of_house::Appetizer::Soup
     } else {
@@ -27,12 +38,15 @@ pub fn menu_summary() -> String {
         "{} serves {} with {}",
         crate::school_name(),
         appetizer,
+        // `self::`는 현재 모듈(여기서는 라이브러리 루트)에서 시작하는 상대 경로다.
         self::hosting::greeting()
     )
 }
 
 #[cfg(test)]
 mod tests {
+    // `super::`는 한 단계 상위 모듈을 가리킨다. 여기서는 비공개 `tests` 모듈에서
+    // 라이브러리 루트의 재내보내기를 가져오며, `as host`는 로컬 별칭이다.
     use super::hosting as host;
 
     #[test]
