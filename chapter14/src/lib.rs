@@ -1,9 +1,13 @@
 /// Arithmetic helpers demonstrated by this crate.
+/// 이 공개 모듈은 라이브러리 사용자가 `chapter14::math` 경로로 발견할 수 있는 API의 묶음이다.
 pub mod math {
     /// Adds one to an integer.
+    /// 이 함수는 공개 API 예제이며, `const fn`이므로 인수가 상수 평가 문맥에 있을 때도 컴파일 시 계산할 수 있다.
     ///
     /// # Examples
     ///
+    /// 아래 코드는 문서에 보이는 동시에 `cargo test --doc`가 컴파일하고 실행하는 사용 예제다.
+    /// `chapter14::add_one`은 모듈 내부 경로가 아닌 재공개된 안정적인 공개 경로를 보여 준다.
     /// ```
     /// use chapter14::add_one;
     ///
@@ -15,6 +19,7 @@ pub mod math {
 }
 
 /// Re-exports the documented arithmetic helper at the crate root.
+/// 재공개는 새 함수를 만들지 않고 같은 항목을 `chapter14::add_one`이라는 짧은 공개 경로로 노출한다.
 pub use math::add_one;
 
 #[cfg(test)]
