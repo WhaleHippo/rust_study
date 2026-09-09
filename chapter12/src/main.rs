@@ -1,4 +1,5 @@
 #[derive(Debug, PartialEq, Eq)]
+// 파싱 경계에서 가능한 실패 원인을 열거형으로 제한해 호출자가 모든 경우를 구분할 수 있게 한다.
 enum ConfigError {
     MissingQuery,
     MissingContents,
@@ -6,6 +7,7 @@ enum ConfigError {
 }
 
 #[derive(Debug, PartialEq, Eq)]
+// `'text`는 쿼리와 내용이 원본 인수보다 오래 살 수 없음을 표현한다. Config는 문자열을 소유하지 않고 빌린다.
 struct Config<'text> {
     query: &'text str,
     contents: &'text str,
@@ -14,6 +16,8 @@ struct Config<'text> {
 
 impl<'text> Config<'text> {
     fn parse(arguments: &'text [&'text str]) -> Result<Self, ConfigError> {
+        // 슬라이스 패턴은 인수 개수와 `--ignore-case`의 정확한 위치를 동시에 검사한다.
+        // 어느 패턴에도 맞지 않는 입력은 각각의 오류 변형으로 경계에서 즉시 반환한다.
         match arguments {
             [query, contents] => Ok(Self {
                 query,
@@ -33,6 +37,7 @@ impl<'text> Config<'text> {
 }
 
 fn search<'text>(query: &str, contents: &'text str) -> Vec<&'text str> {
+    // `lines()`가 만든 각 줄은 `contents`의 부분 슬라이스다. 반환 Vec는 새 문자열을 만들지 않고 그 참조만 보관한다.
     contents
         .lines()
         .filter(|line| line.contains(query))
@@ -40,6 +45,8 @@ fn search<'text>(query: &str, contents: &'text str) -> Vec<&'text str> {
 }
 
 fn search_case_insensitive<'text>(query: &str, contents: &'text str) -> Vec<&'text str> {
+    // `to_lowercase()`는 유니코드 대소문자 비교를 위해 새 `String`을 할당한다. 줄마다 임시 소문자 문자열을 만들지만,
+    // 일치한 결과는 원본 `contents`에서 빌린 줄 그대로라 출력의 대소문자와 수명은 유지된다.
     let query = query.to_lowercase();
     contents
         .lines()
@@ -48,6 +55,7 @@ fn search_case_insensitive<'text>(query: &str, contents: &'text str) -> Vec<&'te
 }
 
 fn parse_and_search<'text>(arguments: &'text [&'text str]) -> Result<Vec<&'text str>, ConfigError> {
+    // `?`는 파싱 성공 시 Config를 꺼내고, 실패 시 같은 ConfigError를 즉시 호출자에게 전파한다.
     let config = Config::parse(arguments)?;
     if config.case_sensitive {
         Ok(search(config.query, config.contents))
@@ -66,6 +74,7 @@ fn main() -> Result<(), ConfigError> {
         "Rust:\nsafe, fast, productive.\nDuct tape.",
         "--ignore-case",
     ];
+    // 실제 인수ㆍ파일ㆍ환경ㆍ네트워크 대신 고정 배열을 주입하므로 실행마다 같은 입력과 결과를 관찰한다.
     for line in parse_and_search(&sample)? {
         println!("case-insensitive match: {line}");
     }
@@ -77,6 +86,7 @@ mod tests {
     use super::{Config, ConfigError, parse_and_search, search, search_case_insensitive};
 
     const SAMPLE: &str = "Rust:\nsafe, fast, productive.\nDuct tape.";
+    // 고정 입력과 `lines()`의 원본 순서 보존 덕분에 일치 결과의 순서도 결정적이며, 일치가 없으면 빈 Vec가 된다.
 
     #[test]
     fn config_parse_when_ignore_case_is_requested() {
@@ -142,6 +152,8 @@ mod tests {
         // When: a case-sensitive search is performed.
         let matches = search("missing", contents);
         // Then: no lines are returned.
+        // 빈 결과도 오류가 아닌 정상 검색 결과이므로 `search`는 빈 Vec를 그대로 반환한다.
+        // 같은 결과를 `parse_and_search`로 얻으면 파싱 성공을 나타내는 `Ok`가 이 Vec를 감싼다.
         assert!(matches.is_empty());
     }
 }
