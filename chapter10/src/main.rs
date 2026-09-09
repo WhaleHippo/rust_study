@@ -4,6 +4,8 @@ struct Point<X, Y> {
 }
 
 impl<X, Y> Point<X, Y> {
+    // 호출 인수에서 X와 Y를 추론한다. 컴파일러는 실제로 쓰인 각 타입 조합에 맞는 코드를
+    // 단형화(monomorphization)하므로, 런타임에 타입 태그를 검사하는 범용 컨테이너가 아니다.
     const fn new(x: X, y: Y) -> Self {
         Self { x, y }
     }
@@ -13,6 +15,8 @@ impl<X, Y> Point<X, Y> {
     }
 
     fn mixup<X2, Y2>(self, other: Point<X2, Y2>) -> Point<X, Y2> {
+        // self와 other를 값으로 받으므로 두 Point의 소유권이 이 메서드로 이동한다. 아래 필드를
+        // 꺼내 새 Point로 다시 소유시키며, 결과는 self.x의 타입 X와 other.y의 타입 Y2를 결합한다.
         Point {
             x: self.x,
             y: other.y,
@@ -21,14 +25,18 @@ impl<X, Y> Point<X, Y> {
 }
 
 trait Summary {
+    // 구현체마다 반드시 제공해야 하는 요구 메서드다. 이 메서드가 없으면 Summary를 구현할 수 없다.
     fn summarize(&self) -> String;
 
+    // 기본 메서드는 모든 구현체가 재사용할 수 있으며, 여기서는 요구 메서드 summarize에 의존한다.
+    // 구현체는 필요할 때만 이를 재정의한다.
     fn preview(&self) -> String {
         format!("(Read more from {})", self.summarize())
     }
 }
 
 struct Article<'a> {
+    // Article은 문자열을 소유하지 않고 빌린다. 'a는 두 필드의 참조가 Article보다 오래 살아야 함을 나타낸다.
     headline: &'a str,
     author: &'a str,
 }
@@ -40,10 +48,14 @@ impl Summary for Article<'_> {
 }
 
 fn largest<T: Ord>(values: &[T]) -> Option<&T> {
+    // T: Ord가 비교 가능함을 보장한다. max는 새 T를 만들거나 복제하지 않고 입력 슬라이스 안의
+    // 원소를 빌려 반환하므로, Option<&T>는 결과가 values보다 오래 살 수 없음을 표현한다.
     values.iter().max()
 }
 
 fn longest<'a>(left: &'a str, right: &'a str) -> &'a str {
+    // 'a는 세 참조의 관계를 선언한다. 반환 참조는 left와 right가 모두 유효한 공통 기간을 넘을 수 없다.
+    // 길이가 같을 때 >= 분기는 왼쪽 참조를 반환한다는 이 함수의 명시적 계약도 만든다.
     if left.len() >= right.len() {
         left
     } else {
@@ -52,11 +64,14 @@ fn longest<'a>(left: &'a str, right: &'a str) -> &'a str {
 }
 
 fn notify(item: &impl Summary) -> String {
+    // impl Trait은 이 호출마다 구체적인 Summary 구현체를 컴파일 시에 정하는 정적 디스패치 문법이다.
     item.preview()
 }
 
 fn pair_summary<T>(left: &T, right: &T) -> String
 where
+    // where 절은 같은 T가 Summary를 구현해야 한다는 제약을 서명 뒤에 읽기 쉽게 분리하며,
+    // 이 제네릭 호출도 구체 타입별로 단형화되는 정적 디스패치다.
     T: Summary,
 {
     format!("{} | {}", left.summarize(), right.summarize())
