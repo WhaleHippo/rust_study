@@ -3,74 +3,74 @@
 version = 4
 
 [[package]]
-name = "chapter03"
+name = "chapter03-common-programming-concepts"
 version = "0.1.0"
 
 [[package]]
-name = "chapter04"
+name = "chapter04-understanding-ownership"
 version = "0.1.0"
 
 [[package]]
-name = "chapter05"
+name = "chapter05-using-structs-to-structure-related-data"
 version = "0.1.0"
 
 [[package]]
-name = "chapter06"
+name = "chapter06-enums-and-pattern-matching"
 version = "0.1.0"
 
 [[package]]
-name = "chapter07"
+name = "chapter07-managing-growing-projects-with-packages-crates-and-modules"
 version = "0.1.0"
 
 [[package]]
-name = "chapter08"
+name = "chapter08-common-collections"
 version = "0.1.0"
 
 [[package]]
-name = "chapter09"
+name = "chapter09-error-handling"
 version = "0.1.0"
 
 [[package]]
-name = "chapter10"
+name = "chapter10-generic-types-traits-and-lifetimes"
 version = "0.1.0"
 
 [[package]]
-name = "chapter11"
+name = "chapter11-writing-automated-tests"
 version = "0.1.0"
 
 [[package]]
-name = "chapter12"
+name = "chapter12-an-i-o-project-building-a-command-line-program"
 version = "0.1.0"
 
 [[package]]
-name = "chapter13"
+name = "chapter13-functional-language-features-iterators-and-closures"
 version = "0.1.0"
 
 [[package]]
-name = "chapter14"
+name = "chapter14-more-about-cargo-and-crates-io"
 version = "0.1.0"
 
 [[package]]
-name = "chapter15"
+name = "chapter15-smart-pointers"
 version = "0.1.0"
 
 [[package]]
-name = "chapter16"
+name = "chapter16-fearless-concurrency"
 version = "0.1.0"
 
 [[package]]
-name = "chapter17"
+name = "chapter17-fundamentals-of-asynchronous-programming"
 version = "0.1.0"
 dependencies = [
  "futures",
 ]
 
 [[package]]
-name = "chapter18"
+name = "chapter18-object-oriented-programming-features-of-rust"
 version = "0.1.0"
 
 [[package]]
-name = "chapter19"
+name = "chapter19-patterns-and-matching"
 version = "0.1.0"
 
 [[package]]

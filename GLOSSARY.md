@@ -99,7 +99,7 @@
 과정으로 돌아가기: [07장 패키지, 크레이트, 모듈로 프로젝트 관리하기](CURRICULUM.md#chapter-07)
 
 <a id="term-package"></a>
-**패키지, package:** 기능 묶음을 빌드하고 배포하는 Cargo 단위. 하나의 `Cargo.toml`을 가지며 여러 바이너리 크레이트와 최대 하나의 라이브러리 크레이트를 포함할 수 있다. 이 저장소의 `chapter07/`이 한 패키지다. 최초 등장: [07장](CURRICULUM.md#chapter-07).
+**패키지, package:** 기능 묶음을 빌드하고 배포하는 Cargo 단위. 하나의 `Cargo.toml`을 가지며 여러 바이너리 크레이트와 최대 하나의 라이브러리 크레이트를 포함할 수 있다. 이 저장소의 `chapter07-managing-growing-projects-with-packages-crates-and-modules/`가 한 패키지다. 최초 등장: [07장](CURRICULUM.md#chapter-07).
 
 <a id="term-crate"></a>
 **크레이트, crate:** Rust 컴파일 단위이자 모듈 트리의 루트. 라이브러리 또는 바이너리 형태다. 패키지는 Cargo의 묶음이고 크레이트는 컴파일되는 대상이라는 점이 다르다. 최초 등장: [07장](CURRICULUM.md#chapter-07).
@@ -121,7 +121,7 @@
 **`use`:** 긴 경로의 항목을 현재 범위로 가져오는 선언. `as`로 별칭을 줄 수 있지만 그 자체로 외부에 다시 공개되지는 않는다. 최초 등장: [07장](CURRICULUM.md#chapter-07).
 
 <a id="term-reexport"></a>
-**재노출, re-export:** `pub use`로 내부 항목을 새 공개 경로에 다시 내보내는 것. `chapter07::front_of_house::hosting`을 `chapter07::hosting`으로 제공하는 예가 있다. 최초 등장: [07장](CURRICULUM.md#chapter-07).
+**재노출, re-export:** `pub use`로 내부 항목을 새 공개 경로에 다시 내보내는 것. `chapter07_managing_growing_projects_with_packages_crates_and_modules::front_of_house::hosting`을 `chapter07_managing_growing_projects_with_packages_crates_and_modules::hosting`으로 제공하는 예가 있다. 최초 등장: [07장](CURRICULUM.md#chapter-07).
 
 **통합 테스트, integration test:** 패키지의 `tests/` 아래에서 라이브러리를 외부 사용자처럼 불러 검사하는 별도 크레이트. 비공개 항목에는 접근할 수 없다. 최초 등장: [07장](CURRICULUM.md#chapter-07).
 
@@ -312,7 +312,7 @@
 **`join`:** 여러 future를 함께 진행하고 모두 준비되면 결과 튜플을 만드는 결합 연산. 운영체제 스레드를 새로 만든다는 뜻은 아니다. 최초 등장: [17장](CURRICULUM.md#chapter-17).
 
 <a id="term-package-local-dependency"></a>
-**패키지 로컬 의존성:** 워크스페이스 전체가 아닌 특정 자식 패키지의 `Cargo.toml`에만 선언된 의존성. 이 저장소에서는 `futures`가 `chapter17`에만 직접 필요하다. 최초 등장: [17장](CURRICULUM.md#chapter-17).
+**패키지 로컬 의존성:** 워크스페이스 전체가 아닌 특정 자식 패키지의 `Cargo.toml`에만 선언된 의존성. 이 저장소에서는 `futures`가 `chapter17-fundamentals-of-asynchronous-programming`에만 직접 필요하다. 최초 등장: [17장](CURRICULUM.md#chapter-17).
 
 ## 18장
 
