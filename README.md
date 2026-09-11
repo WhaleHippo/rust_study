@@ -10,7 +10,7 @@
 2. **코드에서 알아보는가:** 컴파일러 오류나 라이브러리 API에서 개념을 식별한다.
 3. **설계에 적용하는가:** 여러 선택지 중 상황에 맞는 타입과 경계를 고른다.
 
-앞부분은 뒷부분의 전제다. 소유권을 모른 채 `Arc<Mutex<T>>`를 외우거나, `Future`를 모른 채 비동기 런타임 사용법만 익히면 문제가 생겼을 때 원인을 찾기 어렵다. 이미 아는 주제는 각 단계의 점검표로 확인하고, 막히는 용어가 나오면 연결된 앞 단계로 돌아가면 된다.
+앞부분은 뒷부분의 전제다. 소유권을 모른 채 `Arc<Mutex<T>>`를 외우거나, `Future`를 모른 채 비동기 런타임 사용법만 익히면 문제가 생겼을 때 원인을 찾기 어렵다. 이미 아는 주제는 [학습 주제 및 완료 추적표](topics.md)에서 확인하고, 막히는 용어가 나오면 연결된 앞 단계로 돌아가면 된다.
 
 > **표기 원칙:** 별도 표시가 없는 내용은 stable Rust에서 배울 수 있는 개념이다. **고급**은 사용 빈도보다 이해 난도가 높은 주제다. **nightly 또는 불안정** 표시는 현재 안정 채널에서 일반적으로 쓸 수 없거나 세부 상태를 공식 문서에서 다시 확인해야 하는 기능을 뜻한다. Rust는 계속 발전하므로 실제 사용 전에는 해당 API와 기능의 안정화 상태를 확인한다.
 
@@ -93,13 +93,6 @@ pair.1 = pair.0; // pair.0과 pair.1은 place expression이다.
 
 **흔한 오해:** Rust는 모든 것을 컴파일 시점에 결정하지 않는다. 경계 검사, 동적 디스패치, 할당, 잠금처럼 실행 시점 비용과 검사가 필요한 작업도 있다.
 
-### 단계 점검표
-
-* [ ] `rustup`, `rustc`, `cargo`의 책임을 구분한다.
-* [ ] package, crate, module, edition, toolchain의 차이를 설명한다.
-* [ ] statement와 expression, place와 value의 차이를 코드에서 찾는다.
-* [ ] `cargo check`, `build`, `test`, `doc`를 언제 쓰는지 안다.
-
 ## 2. 문법, 바인딩, 타입, 함수, 제어 흐름
 
 **선수 지식:** 1단계
@@ -151,13 +144,6 @@ fn classify(number: i32) -> &'static str {
 ```
 
 **흔한 오해:** 세미콜론은 단순한 줄 끝 표시가 아니다. expression 뒤에 붙으면 그 값을 버리고 `()`로 만든다.
-
-### 단계 점검표
-
-* [ ] 불변, `mut`, shadowing, `const`, `static`을 구분한다.
-* [ ] 스칼라, 배열, 튜플, 범위의 타입과 메모리 특성을 설명한다.
-* [ ] 함수 반환식과 세미콜론의 관계를 안다.
-* [ ] `if`, `match`, `loop`, `while`, `for`, label을 알맞게 고른다.
 
 ## 3. 소유권, 빌림, 슬라이스, 수명, 소멸
 
@@ -221,14 +207,6 @@ RAII는 값의 생성과 자원 획득을, 값의 소멸과 자원 해제를 묶
 
 **흔한 오해:** borrow checker는 메모리의 물리적 위치만 추적하는 도구가 아니다. 값의 이동, 별칭, 사용 기간을 타입과 제어 흐름 수준에서 검사한다.
 
-### 단계 점검표
-
-* [ ] 이동과 `Copy`, 명시적 `Clone`의 차이를 예측한다.
-* [ ] 공유 빌림, 가변 빌림, 재빌림의 유효 구간을 그릴 수 있다.
-* [ ] 슬라이스가 소유자와 맺는 관계를 설명한다.
-* [ ] 수명 표기가 수명을 연장하지 않는다는 사실을 안다.
-* [ ] partial move, drop scope, RAII, `Drop`을 설명한다.
-
 ## 4. 문자열, UTF-8, 컬렉션
 
 **선수 지식:** 소유권, 빌림, 슬라이스
@@ -268,13 +246,6 @@ Rust 문자열은 정수 인덱싱을 허용하지 않는다. UTF-8에서 한 �
 컬렉션의 반복 방식은 소유권과 연결된다. `for value in collection`은 흔히 컬렉션을 소비하고, `for value in &collection`은 공유 빌림, `for value in &mut collection`은 가변 빌림을 사용한다.
 
 **흔한 오해:** `String`은 문자 배열이 아니며 `char`도 사용자가 보는 글자 하나를 항상 뜻하지 않는다.
-
-### 단계 점검표
-
-* [ ] `String`, `str`, `&str`의 소유권과 크기 차이를 설명한다.
-* [ ] byte, `char`, grapheme cluster를 구분한다.
-* [ ] `Path`와 `OsStr`을 UTF-8 문자열로 성급히 바꾸지 않는다.
-* [ ] 순서, 조회, 삽입 패턴에 따라 컬렉션을 선택한다.
 
 ## 5. 구조체, 열거형, Option, Result, 패턴
 
@@ -331,14 +302,6 @@ fn describe(value: Option<i32>) -> &'static str {
 
 **흔한 오해:** `if let`이 `match`보다 항상 더 간단한 것은 아니다. 여러 상태를 빠짐없이 처리해야 한다면 `match`의 완전성 검사가 더 안전하다.
 
-### 단계 점검표
-
-* [ ] 구조체와 enum으로 유효한 상태만 모델링한다.
-* [ ] method와 associated function을 구분한다.
-* [ ] `Option`과 `Result`를 null, 예외, sentinel 값과 비교해 설명한다.
-* [ ] destructuring, refutable pattern, guard, `@`, or pattern을 읽는다.
-* [ ] wildcard가 완전성 검사를 약하게 만들 수 있음을 안다.
-
 ## 6. 모듈, 크레이트, 가시성, Cargo
 
 **선수 지식:** 함수와 사용자 정의 타입
@@ -362,13 +325,6 @@ feature는 조건부 기능을 합성하는 수단이며 보통 additive해야 �
 attribute `#[...]`와 `#![...]`는 item 또는 crate에 메타데이터를 붙인다. `#[derive(...)]`, `#[test]`, `#[must_use]`, lint 설정이 대표적이다. `#[cfg(...)]`는 target이나 feature에 따라 코드를 포함하고, `cfg!(...)`는 조건의 bool 값을 만든다. 조건별 코드가 실제 target에서 계속 컴파일되는지 CI로 확인해야 한다.
 
 **흔한 오해:** `mod name;`은 파일을 런타임에 불러오는 명령이 아니다. 컴파일할 module tree를 선언한다.
-
-### 단계 점검표
-
-* [ ] package, crate, module, target을 구분한다.
-* [ ] 절대 경로와 상대 경로, `use`와 `pub use`를 설명한다.
-* [ ] 최소 공개 원칙으로 API 가시성을 정한다.
-* [ ] lockfile, feature, profile, `cfg`의 역할을 안다.
 
 ## 7. 제네릭, trait, 연관 항목, 다형성
 
@@ -406,13 +362,6 @@ coherence는 적용 가능한 구현의 충돌을 막는다. local trait는 외�
 외부 trait를 외부 타입에 구현할 수 없을 때는 **newtype**으로 지역 타입을 감싸는 방법이 흔하다. blanket implementation은 넓은 타입 집합에 구현을 제공하므로 이후 구현 가능성을 제한할 수 있다. 공개 trait를 설계할 때는 이 영향을 고려한다.
 
 **흔한 오해:** trait는 클래스 상속의 다른 이름이 아니다. 데이터 상속 없이 동작 계약, 제약, 정적 및 동적 다형성을 표현한다.
-
-### 단계 점검표
-
-* [ ] generic parameter와 trait bound를 필요한 능력으로 설명한다.
-* [ ] associated type과 generic parameter의 선택 기준을 안다.
-* [ ] `impl Trait`와 `dyn Trait`의 표현력과 비용 차이를 안다.
-* [ ] coherence, orphan rule, blanket impl, newtype의 관계를 설명한다.
 
 ## 8. 클로저, 반복자, 변환
 
@@ -456,13 +405,6 @@ assert_eq!(total, 20);
 
 **흔한 오해:** `into_iter()`의 결과를 이름만으로 단정하면 안 된다. 수신 타입과 edition, 구현된 trait를 보고 item이 값인지 참조인지 확인한다.
 
-### 단계 점검표
-
-* [ ] 캡처 방식과 `move`, `FnOnce`, `FnMut`, `Fn`의 관계를 설명한다.
-* [ ] 함수 포인터와 클로저를 구분한다.
-* [ ] 반복자의 지연 실행과 소비 시점을 예측한다.
-* [ ] `From`, `TryFrom`, `AsRef`, `Borrow`를 의미에 따라 고른다.
-
 ## 9. 스마트 포인터, 내부 가변성, Pin
 
 **선수 지식:** 소유권, `Drop`, trait
@@ -499,13 +441,6 @@ assert_eq!(total, 20);
 
 **흔한 오해:** `Arc<T>`가 있으면 `T`가 thread safe해지는 것이 아니다. 스레드 간 이동과 공유 가능성은 `T`의 `Send`, `Sync` 구현에도 달려 있다.
 
-### 단계 점검표
-
-* [ ] `Box`, `Rc`, `Arc`, `Weak`, `Cow`를 소유권 요구에 맞게 고른다.
-* [ ] `Cell`, `RefCell`, `Mutex`, `RwLock`의 검사 시점과 스레드 범위를 안다.
-* [ ] 순환 참조와 잠금 교착 가능성을 식별한다.
-* [ ] `Pin`이 보장하는 것과 보장하지 않는 것을 설명한다.
-
 ## 10. 오류 설계
 
 **선수 지식:** enum, `Option`, `Result`, trait, 변환
@@ -537,13 +472,6 @@ panic은 설정에 따라 unwind하거나 프로세스를 abort할 수 있다. `
 
 **흔한 오해:** `unwrap`과 `expect`가 무조건 나쁜 것은 아니다. 테스트, 예제, 코드상 불가능함이 명확한 내부 불변 조건에는 쓸 수 있다. 다만 외부 입력이나 정상적인 실패 가능성을 처리하는 기본 수단으로 삼으면 안 된다.
 
-### 단계 점검표
-
-* [ ] 부재, 복구 가능한 실패, 불변 조건 위반을 구분한다.
-* [ ] `?`가 수행하는 조기 반환과 오류 변환을 설명한다.
-* [ ] 사용자 정의 오류에 의미와 source를 보존한다.
-* [ ] panic이 넘어가면 안 되는 시스템 경계를 식별한다.
-
 ## 11. 테스트, 문서, 품질 도구
 
 **선수 지식:** 모듈, Cargo, 오류 설계
@@ -562,13 +490,6 @@ panic은 설정에 따라 unwind하거나 프로세스를 abort할 수 있다. `
 * CI는 지원 target과 feature 조합에서 검사, 테스트, 문서 생성을 반복한다.
 
 lint를 모두 기계적으로 허용하거나 금지하기보다 팀이 요구하는 수준을 정하고, 예외에는 이유를 가까이 기록한다.
-
-### 단계 점검표
-
-* [ ] 단위, 통합, 문서 테스트의 경계를 구분한다.
-* [ ] 성공, 실패, 경계값, 회귀를 테스트한다.
-* [ ] 공개 API의 오류, panic, safety 계약을 문서화한다.
-* [ ] `rustfmt`, Clippy, rustdoc, CI의 역할을 구분한다.
 
 ## 12. 스레드와 동시성
 
@@ -598,14 +519,6 @@ memory ordering은 직관으로 낮추면 안 된다. 먼저 mutex나 channel로
 
 **흔한 오해:** data race가 없다는 말은 race condition이 없다는 뜻이 아니다. Rust는 안전한 코드의 data race를 막지만 작업 순서에 따른 논리 버그까지 제거하지는 않는다.
 
-### 단계 점검표
-
-* [ ] thread의 소유권 이동과 join을 설명한다.
-* [ ] channel과 공유 상태 중 더 자연스러운 모델을 고른다.
-* [ ] `Send`, `Sync`가 보장하는 바를 설명한다.
-* [ ] mutex를 써도 생길 수 있는 교착과 논리 race를 찾는다.
-* [ ] atomic ordering을 happens before 관계로 설명할 준비가 되었는지 판단한다.
-
 ## 13. 비동기 프로그래밍
 
 **선수 지식:** 클로저, trait, `Pin`, 스레드와 channel, 오류 설계
@@ -631,14 +544,6 @@ future는 기본적으로 지연 실행되고, executor가 poll하지 않으면 
 async mutex는 잠금 대기 중 스레드를 막지 않는 목적이 있지만, 어떤 mutex를 써야 하는지는 guard를 `.await` 너머로 유지하는지와 critical section 특성에 달려 있다. `.await`를 사이에 둔 잠금은 교착과 긴 점유 시간을 만들기 쉬우므로 피하거나 근거를 분명히 한다.
 
 **흔한 오해:** async는 자동 병렬화가 아니다. 여러 작업을 효율적으로 교차 진행하는 모델이며 CPU 병렬성은 별도 스레드나 실행 전략이 필요하다.
-
-### 단계 점검표
-
-* [ ] `Future`, `poll`, `Waker`, executor의 관계를 설명한다.
-* [ ] 표준 라이브러리에 async runtime이 없음을 안다.
-* [ ] blocking 작업과 async 대기를 구분한다.
-* [ ] 취소 지점에서 자원과 상태가 어떻게 정리되는지 검토한다.
-* [ ] bounded queue와 동시성 제한으로 backpressure를 설계한다.
 
 ## 14. 매크로와 조건부 컴파일
 
@@ -677,13 +582,6 @@ procedural macro는 token stream을 Rust 코드로 변환하며 별도 proc macr
 `#[cfg]`와 Cargo feature는 매크로와 자주 함께 쓰이지만 역할이 다르다. 전자는 코드를 조건부로 포함하고, 후자는 의존성 그래프에서 기능을 선택해 cfg를 활성화한다.
 
 **안정성 주의:** 일부 매크로 내부 기능, compiler plugin 성격의 기능, 진단 API는 nightly 또는 불안정일 수 있다. stable에서 제공되는 `macro_rules!`와 안정화된 proc macro API를 기준으로 시작하고, 세부 기능은 공식 문서에서 상태를 확인한다.
-
-### 단계 점검표
-
-* [ ] 함수와 매크로 중 어느 쪽이 필요한지 판단한다.
-* [ ] `macro_rules!`의 matching, repetition, hygiene를 설명한다.
-* [ ] 세 종류의 procedural macro를 구분한다.
-* [ ] 생성 코드가 입력을 몇 번 평가하는지 점검한다.
 
 ## 15. unsafe, 메모리 불변 조건, FFI
 
@@ -738,14 +636,6 @@ Rust의 기본 표현은 필드 순서나 padding을 안정된 ABI로 약속하�
 안전한 wrapper는 FFI의 raw 계약을 한곳에서 검증하고 외부에는 참조, 슬라이스, `Result`, 소유 타입처럼 Rust다운 API를 제공한다.
 
 **흔한 오해:** unsafe block 안에서 문제가 발생하지 않았다고 unsafe가 올바른 것은 아니다. 잘못 만든 참조가 나중의 안전한 코드에서 최적화와 충돌하며 문제가 드러날 수 있다.
-
-### 단계 점검표
-
-* [ ] 각 unsafe block의 선행 조건과 유지되는 불변 조건을 적을 수 있다.
-* [ ] raw pointer를 참조로 바꾸기 위한 조건을 설명한다.
-* [ ] `MaybeUninit`과 `ManuallyDrop`의 책임을 안다.
-* [ ] layout, provenance, aliasing을 주소값만으로 판단하지 않는다.
-* [ ] FFI의 ABI, 문자열, ownership, panic 경계를 명시한다.
 
 ## 16. 고급 타입 시스템
 
@@ -813,15 +703,6 @@ typestate는 상태 수가 적고 전이가 명확할 때 강력하다. 상태 �
 
 specialization, 일반적인 negative impl, 일부 const trait 기능, 복잡한 generic const expression, 여러 compiler 내부 attribute는 대표적으로 안정 채널에서 제한될 수 있는 영역이다. 기능 이름을 봤다는 이유만으로 stable이라고 가정하지 말고, 현재 Reference와 tracking issue를 확인한다. nightly 기능을 쓴다면 crate root의 feature gate, 사용 이유, 제거 조건, CI toolchain을 명시한다.
 
-### 단계 점검표
-
-* [ ] const generic이 값 제약을 타입에 보존하는 이유를 설명한다.
-* [ ] GAT와 HRTB가 해결하는 수명 의존 추상화를 구분한다.
-* [ ] variance와 `PhantomData`가 soundness에 미치는 영향을 안다.
-* [ ] DST, `Sized`, `!`, ZST를 구분한다.
-* [ ] newtype과 typestate를 복잡성 비용까지 고려해 선택한다.
-* [ ] 고급 기능을 쓰기 전 stable 여부를 공식 문서에서 확인한다.
-
 ## 17. 성능과 프로덕션 운영
 
 **선수 지식:** 앞 단계 전체, 특히 소유권, Cargo, 동시성, unsafe
@@ -864,15 +745,6 @@ cross compilation은 host에서 다른 target용 코드를 만드는 일이다. 
 
 라이브러리는 핵심 로직을 `core` 또는 `alloc`에 맞추고 운영체제 통합을 feature로 분리할 수 있다. 하지만 실제 필요 없이 `no_std` 호환성을 약속하면 API와 테스트 행렬만 복잡해질 수 있다.
 
-### 단계 점검표
-
-* [ ] release 환경의 실제 부하로 성능을 측정한다.
-* [ ] 할당, cache, dispatch, lock, I/O 비용을 구분한다.
-* [ ] 의존성의 기능, 보안, 라이선스, MSRV, target 영향을 검토한다.
-* [ ] SemVer를 시그니처보다 넓은 API 계약으로 이해한다.
-* [ ] cross target의 linker, layout, OS 차이를 검증한다.
-* [ ] `no_std`, `core`, `alloc`의 제공 범위를 구분한다.
-
 ## 18. 프로젝트 진행 방향
 
 이 지도는 곧바로 작업 목록을 정하는 문서가 아니다. 앞으로 프로젝트를 설계할 때는 아래 순서로 학습 범위를 넓히면 개념 사이의 빈틈을 찾기 쉽다.
@@ -905,21 +777,6 @@ cross compilation은 host에서 다른 target용 코드를 만드는 일이다. 
 * 여러 실행 흐름이 어떤 순서와 권한으로 데이터를 보는가?
 * 공개 계약, 지원 target, MSRV, feature가 어떻게 검증되는가?
 * unsafe가 있다면 안전한 호출자가 그 전제를 깨뜨릴 수 없는가?
-
-## 최종 역량 점검
-
-기초를 넘었다고 판단하려면 문법을 기억하는 것보다 아래 능력이 있는지 확인한다.
-
-* [ ] 컴파일 오류를 타입, 이동, 빌림, 수명 관계로 해석한다.
-* [ ] 문자열과 OS 문자열, byte와 Unicode 단위를 구분한다.
-* [ ] enum과 exhaustive matching으로 상태를 모델링한다.
-* [ ] 최소한의 공개 API와 명확한 오류 계약을 설계한다.
-* [ ] generic, `impl Trait`, `dyn Trait` 중 필요한 다형성을 고른다.
-* [ ] 소유, 공유, 내부 가변성에 맞는 pointer와 동기화 도구를 고른다.
-* [ ] 동시성과 async 코드의 종료, 취소, backpressure를 설명한다.
-* [ ] 테스트, 문서, lint, CI로 계약을 반복 검증한다.
-* [ ] unsafe와 FFI의 불변 조건을 문서와 코드 경계에 가둔다.
-* [ ] 성능, 호환성, 보안 주장을 실제 target과 측정으로 확인한다.
 
 ## 공식 참고 자료
 
