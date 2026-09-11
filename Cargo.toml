@@ -1,0 +1,15 @@
+[workspace]
+members = [
+    "day002-project-units",
+    "day003-expressions-and-places",
+    "day005-bindings-and-constants",
+    "day006-core-types",
+    "day007-function-expressions",
+    "day008-control-flow",
+    "day009-move-copy-clone",
+    "day010-borrowing-and-reborrowing",
+    "day011-slice-ownership",
+    "day012-lifetime-annotations",
+    "day013-drop-and-raii",
+]
+resolver = "3"

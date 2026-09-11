@@ -4,25 +4,25 @@
 
 ## 1. 도구 체인과 컴파일러 모델
 
-* [ ] `day001-toolchain-roles`: `rustup`, `rustc`, `cargo`의 책임을 구분한다.
-* [ ] `day002-project-units`: package, crate, module, edition, toolchain의 차이를 설명한다.
-* [ ] `day003-expressions-and-places`: statement와 expression, place와 value의 차이를 코드에서 찾는다.
-* [ ] `day004-cargo-commands`: `cargo check`, `build`, `test`, `doc`를 언제 쓰는지 안다.
+* [x] `day001-toolchain-roles`: `rustup`, `rustc`, `cargo`의 책임을 구분한다.
+* [x] `day002-project-units`: package, crate, module, edition, toolchain의 차이를 설명한다.
+* [x] `day003-expressions-and-places`: statement와 expression, place와 value의 차이를 코드에서 찾는다.
+* [x] `day004-cargo-commands`: `cargo check`, `build`, `test`, `doc`를 언제 쓰는지 안다.
 
 ## 2. 문법, 바인딩, 타입, 함수, 제어 흐름
 
-* [ ] `day005-bindings-and-constants`: 불변, `mut`, shadowing, `const`, `static`을 구분한다.
-* [ ] `day006-core-types`: 스칼라, 배열, 튜플, 범위의 타입과 메모리 특성을 설명한다.
-* [ ] `day007-function-expressions`: 함수 반환식과 세미콜론의 관계를 안다.
-* [ ] `day008-control-flow`: `if`, `match`, `loop`, `while`, `for`, label을 알맞게 고른다.
+* [x] `day005-bindings-and-constants`: 불변, `mut`, shadowing, `const`, `static`을 구분한다.
+* [x] `day006-core-types`: 스칼라, 배열, 튜플, 범위의 타입과 메모리 특성을 설명한다.
+* [x] `day007-function-expressions`: 함수 반환식과 세미콜론의 관계를 안다.
+* [x] `day008-control-flow`: `if`, `match`, `loop`, `while`, `for`, label을 알맞게 고른다.
 
 ## 3. 소유권, 빌림, 슬라이스, 수명, 소멸
 
-* [ ] `day009-move-copy-clone`: 이동과 `Copy`, 명시적 `Clone`의 차이를 예측한다.
-* [ ] `day010-borrowing-and-reborrowing`: 공유 빌림, 가변 빌림, 재빌림의 유효 구간을 그릴 수 있다.
-* [ ] `day011-slice-ownership`: 슬라이스가 소유자와 맺는 관계를 설명한다.
-* [ ] `day012-lifetime-annotations`: 수명 표기가 수명을 연장하지 않는다는 사실을 안다.
-* [ ] `day013-drop-and-raii`: partial move, drop scope, RAII, `Drop`을 설명한다.
+* [x] `day009-move-copy-clone`: 이동과 `Copy`, 명시적 `Clone`의 차이를 예측한다.
+* [x] `day010-borrowing-and-reborrowing`: 공유 빌림, 가변 빌림, 재빌림의 유효 구간을 그릴 수 있다.
+* [x] `day011-slice-ownership`: 슬라이스가 소유자와 맺는 관계를 설명한다.
+* [x] `day012-lifetime-annotations`: 수명 표기가 수명을 연장하지 않는다는 사실을 안다.
+* [x] `day013-drop-and-raii`: partial move, drop scope, RAII, `Drop`을 설명한다.
 
 ## 4. 문자열, UTF-8, 컬렉션
 

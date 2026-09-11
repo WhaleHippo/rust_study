@@ -1,0 +1,11 @@
+[package]
+name = "day009-move-copy-clone"
+version = "0.1.0"
+edition = "2024"
+publish = false
+
+[features]
+default = []
+learner-practice = []
+
+[dependencies]
